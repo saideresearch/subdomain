@@ -63,7 +63,7 @@ Designed for:
 
 Your app will be live at:
 
-[https://saideresearch.github.io/REPOSITORY-NAME/](https://saideresearch.github.io/REPOSITORY-NAME/)
+[https://saideresearch.github.io/subdomain/](https://saideresearch.github.io/subdomain/)
 
 ---
 
