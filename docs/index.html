@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subdomain Deduplicator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Subdomain Recon Toolkit</h1>
+
+    <!-- Target Domain -->
+    <div class="mb-6">
+      <label class="block mb-2 font-semibold">Target Domain</label>
+      <input id="targetDomain" type="text" placeholder="example.com"
+        class="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Tools Checklist -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-3">Subdomain Tools Used</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+
+        <!-- Tool List -->
+        <label><input type="checkbox" class="mr-2">amass</label>
+        <label><input type="checkbox" class="mr-2">subfinder</label>
+        <label><input type="checkbox" class="mr-2">sublist3r</label>
+        <label><input type="checkbox" class="mr-2">findomain</label>
+        <label><input type="checkbox" class="mr-2">assetfinder</label>
+        <label><input type="checkbox" class="mr-2">dnsenum</label>
+        <label><input type="checkbox" class="mr-2">dnsrecon</label>
+        <label><input type="checkbox" class="mr-2">dnsmap</label>
+        <label><input type="checkbox" class="mr-2">altdns</label>
+        <label><input type="checkbox" class="mr-2">massdns</label>
+        <label><input type="checkbox" class="mr-2">puredns</label>
+        <label><input type="checkbox" class="mr-2">shuffledns</label>
+        <label><input type="checkbox" class="mr-2">theharvester</label>
+        <label><input type="checkbox" class="mr-2">recon-ng</label>
+        <label><input type="checkbox" class="mr-2">bbot</label>
+        <label><input type="checkbox" class="mr-2">oneforall</label>
+        <label><input type="checkbox" class="mr-2">knockpy</label>
+        <label><input type="checkbox" class="mr-2">subjack</label>
+        <label><input type="checkbox" class="mr-2">subover</label>
+        <label><input type="checkbox" class="mr-2">gau</label>
+        <label><input type="checkbox" class="mr-2">waybackurls</label>
+        <label><input type="checkbox" class="mr-2">github-subdomains</label>
+        <label><input type="checkbox" class="mr-2">crtsh</label>
+        <label><input type="checkbox" class="mr-2">chaos-client</label>
+
+      </div>
+    </div>
+
+    <!-- Raw Results -->
+    <div class="mb-6">
+      <label class="block mb-2 font-semibold">Paste All Tool Results</label>
+      <textarea id="rawInput" rows="8"
+        class="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+        placeholder="Paste subdomains here..."></textarea>
+    </div>
+
+    <!-- Process Button -->
+    <div class="mb-6">
+      <button onclick="processSubdomains()"
+        class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl font-semibold shadow-lg">
+        Generate Unique Subdomains
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div>
+      <h2 class="text-xl font-semibold mb-2">Unique Subdomains</h2>
+      <p class="mb-2 text-sm text-gray-400">Total: <span id="count">0</span></p>
+      <textarea id="output" rows="10"
+        class="w-full p-3 rounded-xl bg-gray-800 border border-gray-700"></textarea>
+
+      <button onclick="copyResults()"
+        class="mt-4 bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-semibold">
+        Copy Results
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    function processSubdomains() {
+      const target = document.getElementById("targetDomain").value.trim();
+      const raw = document.getElementById("rawInput").value;
+
+      if (!target) {
+        alert("Please enter target domain");
+        return;
+      }
+
+      const lines = raw.split(/\s+/);
+      const unique = new Set();
+
+      lines.forEach(line => {
+        const clean = line.toLowerCase().trim();
+        if (clean.endsWith("." + target) || clean === target) {
+          unique.add(clean);
+        }
+      });
+
+      const result = Array.from(unique).sort();
+      document.getElementById("output").value = result.join("\n");
+      document.getElementById("count").innerText = result.length;
+    }
+
+    function copyResults() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      alert("Copied to clipboard");
+    }
+  </script>
+
+</body>
+</html>
